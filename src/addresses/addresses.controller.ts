@@ -1,18 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Res, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 import { AddressesService } from './addresses.service';
 import { CreateAddressDto } from './dto/create-address.dto';
+import { Utils } from '../utils/Utils';
 
 @Controller('addresses')
 export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
 
-  @Post()
-  create(@Body() createAddressDto: CreateAddressDto) {
-    return this.addressesService.create(createAddressDto);
-  }
-
   @Get(':postalCode/detail')
-  findOne(@Param('postalCode') postalCode: string) {
-    return this.addressesService.findOne(postalCode);
+  async findOne(@Param('postalCode') postalCode: string, @Res() res: Response) {
+    const normalizedCep = Utils.normalizeCep(postalCode);
+    if(normalizedCep.length !== 8) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: "CEP precisa ser uma sequencia de 8 dígitos." });
+    };
+    const addressFound = await this.addressesService.findOne(normalizedCep);
+    if(!addressFound) {
+      return res.status(HttpStatus.NOT_FOUND).json({ error: "Endereço não encontrado." });
+    };
+    return res.status(HttpStatus.OK).json(addressFound);
   }
 }

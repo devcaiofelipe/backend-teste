@@ -26,6 +26,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^9.0.1",
     "@nestjs/platform-express": "^8.0.0",
+    "axios": "^0.24.0",
     "mongoose": "^6.0.13",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
