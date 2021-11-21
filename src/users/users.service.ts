@@ -44,4 +44,9 @@ export class UsersService {
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+  async findByCPF(cpf: string): Promise<boolean> {
+    const hasUser = await this.usersRepository.find({ cpf });
+    return !!(hasUser[0]);
+  };
 }
