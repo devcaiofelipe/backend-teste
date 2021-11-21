@@ -45,8 +45,8 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async findByCPF(cpf: string): Promise<boolean> {
-    const hasUser = await this.usersRepository.find({ cpf });
-    return !!(hasUser[0]);
+  async findByCPF(cpf: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ cpf });
+    return user ? user : null;
   };
 }
