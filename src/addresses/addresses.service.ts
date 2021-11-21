@@ -54,7 +54,7 @@ export class AddressesService {
   };
 
   handleAddress(address: AddressBR): CreateAddressDto {
-    const normalizedCep = Utils.normalizeCep(address.cep);
+    const normalizedCep = Utils.normalizeOnlyNumbers(address.cep);
     return {
       postalCode: normalizedCep,
       street: address.logradouro ? address.logradouro : null,

@@ -9,7 +9,7 @@ export class AddressesController {
 
   @Get(':postalCode/detail')
   async findOne(@Param('postalCode') postalCode: string, @Res() res: Response) {
-    const normalizedCep = Utils.normalizeCep(postalCode);
+    const normalizedCep = Utils.normalizeOnlyNumbers(postalCode);
     if(normalizedCep.length !== 8) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: "CEP precisa ser uma sequencia de 8 dígitos." });
     };
