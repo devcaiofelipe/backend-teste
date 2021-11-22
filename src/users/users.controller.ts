@@ -29,11 +29,16 @@ export class UsersController {
   };
 
   @Get(':cpf/find-by-cpf')
-  async findOneByCPF(@Param() cpf: string, @Res() res: Response) {
-    const userFound = await this.usersService.findByCPF(cpf);
+  async findOneByCPF(@Param() params, @Res() res: Response) {
+    const { cpf } = params;
+    const normalizedCPF = Utils.normalizeOnlyNumbers(cpf);
+    if(!Utils.isValidCPF(normalizedCPF)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF inválido.' })
+    };
+    const userFound = await this.usersService.findByCPF(normalizedCPF);
     if(!userFound) {
       return res.status(HttpStatus.NOT_FOUND).json({ error: 'Nenhum usuário encontrado com estes dados.' })
     };
-    return res.status(HttpStatus.ACCEPTED).json({ ok: cpf });
+    return res.status(HttpStatus.ACCEPTED).json(userFound);
   };
 };
