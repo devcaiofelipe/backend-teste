@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Res, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Get, Post, Res, HttpStatus, Body, Param } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,5 +26,10 @@ export class UsersController {
     };
     const newUser = await this.usersService.create(user);
     return res.status(HttpStatus.CREATED).json(newUser);
+  };
+
+  @Get(':cpf/find-by-cpf')
+  async findOneByCPF(@Param() cpf: string, @Res() res: Response) {
+    return res.status(HttpStatus.ACCEPTED).json({ ok: cpf });
   };
 };
