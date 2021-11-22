@@ -30,6 +30,10 @@ export class UsersController {
 
   @Get(':cpf/find-by-cpf')
   async findOneByCPF(@Param() cpf: string, @Res() res: Response) {
+    const userFound = await this.usersService.findByCPF(cpf);
+    if(!userFound) {
+      return res.status(HttpStatus.NOT_FOUND).json({ error: 'Nenhum usuário encontrado com estes dados.' })
+    };
     return res.status(HttpStatus.ACCEPTED).json({ ok: cpf });
   };
 };
