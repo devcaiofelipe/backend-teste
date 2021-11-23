@@ -1,6 +1,14 @@
 version: "3.8"
 services:
 
+    api:
+        container_name: nest_api
+        build: .
+        ports:
+            - 3000:3000
+        volumes:
+            - .:/home/api
+
     mongodb:
         image : mongo:latest
         container_name: mongodb

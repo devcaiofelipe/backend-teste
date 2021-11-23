@@ -10,10 +10,10 @@ import { User } from './users/entities/user.entity';
 @Module({
   imports: [
     AddressesModule, UsersModule,
-    MongooseModule.forRoot('mongodb://root:pass12345@localhost:27017'),
+    MongooseModule.forRoot('mongodb://root:pass12345@mongodb:27017'),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'mysql-development',
       port: 3306,
       username: 'root',
       password: 'pass12345',
