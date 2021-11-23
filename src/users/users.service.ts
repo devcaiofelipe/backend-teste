@@ -12,7 +12,9 @@ export class UsersService {
   ) {}
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({
+      select: ['id', 'fullname', 'cpf'],
+    });
   };
 
   async create(payload: CreateUserDto): Promise<User> {
