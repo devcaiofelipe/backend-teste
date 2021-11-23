@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Res, HttpStatus, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Res, HttpStatus, Body, Param, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,7 +8,11 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {};
 
   @Get('all')
-  async findAll(@Res() res: Response) {
+  async findAll(@Query() queryParams, @Res() res: Response) {
+    const { page, users } = queryParams;
+    if(!Utils.isDigit(page) || !Utils.isDigit(users)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Os parametros de consulta precisam ser numérico' })
+    };
     const result = await this.usersService.findAll();
     return res.status(HttpStatus.ACCEPTED).json(result);
   };

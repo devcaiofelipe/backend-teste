@@ -80,4 +80,7 @@ export class Utils {
         return true;
     }
   }
+  static isDigit(digit: string): boolean {
+    return /\d+/.test(digit);
+  };
 };
