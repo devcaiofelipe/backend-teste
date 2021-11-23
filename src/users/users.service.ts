@@ -12,6 +12,18 @@ export class UsersService {
   ) {}
 
   findAll(page: number, number: number): Promise<User[]> {
+    const MAX_USERS_PER_PAGE = 50;
+    const MIN_USERS_PER_PAGE = 1;
+    const MIN_NUMBER_PAGE = 1;
+    if(page < MIN_NUMBER_PAGE) {
+      page = 1;
+    };
+    if(number > MAX_USERS_PER_PAGE) {
+      number = 50;
+    };
+    if(number < MIN_USERS_PER_PAGE) {
+      number = 1;
+    };
     const offset = number * (page - 1);
     return this.usersRepository.find({
       select: ['id', 'fullname', 'cpf'],

@@ -10,10 +10,12 @@ export class UsersController {
   @Get('all')
   async findAll(@Query() queryParams, @Res() res: Response) {
     let { page, users } = queryParams;
-    if(typeof page === 'undefined') {
+    const pageWasNotSent = typeof page === 'undefined';
+    const usersWasNotSent = typeof users === 'undefined';
+    if(pageWasNotSent) {
       page = 1;
     };
-    if(typeof users === 'undefined') {
+    if(usersWasNotSent) {
       users = 10;
     };
     if(!Utils.isDigit(page) || !Utils.isDigit(users)) {
