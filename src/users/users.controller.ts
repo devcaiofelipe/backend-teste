@@ -34,6 +34,9 @@ export class UsersController {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Dados do usuário estão inválidos.' });
     };
     const user = Utils.handleUser(payload);
+    if(!Utils.isValidCPF(user.cpf)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF inválido.' })
+    };
     const userAlreadyExists = await this.usersService.findByCPF(user.cpf);
     if(userAlreadyExists) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Usuário ja cadastrado.'})
