@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+type orderType = 'ASC' | 'DESC';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +12,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(page: number, number: number): Promise<User[]> {
+  findAll(page: number, number: number, orderType: orderType): Promise<User[]> {
     const MAX_USERS_PER_PAGE = 50;
     const MIN_USERS_PER_PAGE = 1;
     const MIN_NUMBER_PAGE = 1;
@@ -28,7 +29,8 @@ export class UsersService {
     return this.usersRepository.find({
       select: ['id', 'fullname', 'cpf'],
       skip: offset,
-      take: number
+      take: number,
+      order: { id: orderType }
     });
   };
 

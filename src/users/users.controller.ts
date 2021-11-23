@@ -9,21 +9,29 @@ export class UsersController {
 
   @Get('all')
   async findAll(@Query() queryParams, @Res() res: Response) {
-    let { page, users } = queryParams;
+    let { page, users, order } = queryParams;
     const pageWasNotSent = typeof page === 'undefined';
     const usersWasNotSent = typeof users === 'undefined';
+    const orderWasNotSent = typeof order === 'undefined';
     if(pageWasNotSent) {
       page = 1;
     };
     if(usersWasNotSent) {
       users = 10;
     };
+    if(orderWasNotSent) {
+      order = 'DESC'
+    };
+    const ordersType = ['ASC', 'DESC'];
+    if(!ordersType.includes(order.toUpperCase())) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Order precisa ser ASC ou DESC' })
+    };
     if(!Utils.isDigit(page) || !Utils.isDigit(users)) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Os parametros de consulta precisam ser numérico' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Os parametros de consulta precisam ser numérico' });
     };
     const pageNumber = parseInt(page);
     const usersNumber = parseInt(users);
-    const result = await this.usersService.findAll(pageNumber, usersNumber);
+    const result = await this.usersService.findAll(pageNumber, usersNumber, order);
     return res.status(HttpStatus.ACCEPTED).json(result);
   };
 
