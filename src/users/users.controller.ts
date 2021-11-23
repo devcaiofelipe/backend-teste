@@ -9,11 +9,19 @@ export class UsersController {
 
   @Get('all')
   async findAll(@Query() queryParams, @Res() res: Response) {
-    const { page, users } = queryParams;
+    let { page, users } = queryParams;
+    if(typeof page === 'undefined') {
+      page = 1;
+    };
+    if(typeof users === 'undefined') {
+      users = 10;
+    };
     if(!Utils.isDigit(page) || !Utils.isDigit(users)) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Os parametros de consulta precisam ser numérico' })
     };
-    const result = await this.usersService.findAll();
+    const pageNumber = parseInt(page);
+    const usersNumber = parseInt(users);
+    const result = await this.usersService.findAll(pageNumber, usersNumber);
     return res.status(HttpStatus.ACCEPTED).json(result);
   };
 

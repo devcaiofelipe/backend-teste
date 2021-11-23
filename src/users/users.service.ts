@@ -11,9 +11,12 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
+  findAll(page: number, number: number): Promise<User[]> {
+    const offset = number * (page - 1);
     return this.usersRepository.find({
       select: ['id', 'fullname', 'cpf'],
+      skip: offset,
+      take: number
     });
   };
 
