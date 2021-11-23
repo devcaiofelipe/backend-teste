@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Res, HttpStatus, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Res, HttpStatus, Body, Param } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -40,5 +40,17 @@ export class UsersController {
       return res.status(HttpStatus.NOT_FOUND).json({ error: 'Nenhum usuário encontrado com estes dados.' })
     };
     return res.status(HttpStatus.ACCEPTED).json(userFound);
+  };
+
+  @Delete(':id/delete')
+  async delete(@Param() params, @Res() res: Response) {
+    const { id } = params;
+    const integer = parseInt(id);
+    const result = await this.usersService.remove(integer);
+    const userDeleted = result.affected > 0;
+    if(!userDeleted) {
+      return res.status(HttpStatus.NOT_FOUND).json({ error: 'Nenhum usuário deletado' });
+    };
+    return res.status(HttpStatus.ACCEPTED).json({ message: 'Usuário deletado com sucesso.' });
   };
 };
