@@ -8,7 +8,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {};
 
   @Get('all')
-  async findOne(@Res() res: Response) {
+  async findAll(@Res() res: Response) {
     const result = await this.usersService.findAll();
     return res.status(HttpStatus.ACCEPTED).json(result);
   };
