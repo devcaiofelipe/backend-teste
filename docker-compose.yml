@@ -8,6 +8,9 @@ services:
             - 3000:3000
         volumes:
             - .:/home/api
+        depends_on:
+            - mysql-development
+            - mongodb
 
     mongodb:
         image : mongo:latest
