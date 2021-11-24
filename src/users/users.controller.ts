@@ -31,7 +31,7 @@ export class UsersController {
     };
     const pageNumber = parseInt(page);
     const usersNumber = parseInt(users);
-    const result = await this.usersService.findAll(pageNumber, usersNumber, order);
+    const result = await this.usersService.findAll(pageNumber, usersNumber, order.toUpperCase());
     return res.status(HttpStatus.ACCEPTED).json(result);
   };
 
