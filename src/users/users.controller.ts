@@ -78,4 +78,19 @@ export class UsersController {
     };
     return res.status(HttpStatus.ACCEPTED).json({ message: 'Usuário deletado com sucesso.' });
   };
+
+  @Post(':id/update')
+  async update(@Param() params, @Body() payload, @Res() res: Response) {
+    const { id } = params;
+    if(!Utils.isDigit(id) || parseInt(id) < 1) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Parametro ID precisa ser numérico.' });
+    };
+    if(Utils.normalizeOnlyNumbers(payload.phone).length !== 11) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Telefone precisa ter 11 caracteres.'});
+    };
+    if(Utils.normalizeOnlyNumbers(payload.cpf).length !== 11) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF precisa ter 11 caracteres.'});
+    };
+    return res.status(HttpStatus.CREATED).json({ ok: payload });
+  };
 };

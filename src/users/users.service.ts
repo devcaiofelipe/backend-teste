@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 type orderType = 'ASC' | 'DESC';
 
@@ -67,5 +68,9 @@ export class UsersService {
   async findByCPF(cpf: string): Promise<User> {
     const user = await this.usersRepository.findOne({ cpf });
     return user ? user : null;
+  };
+
+  async update(userId: number, userData: UpdateUserDto) {
+    return;
   };
 }
