@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AddressesService } from './addresses.service';
 import { AddressesController } from './addresses.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Address, AddressSchema } from './entities/address.entity';
+import MongooseFactory from 'src/infra/factory/mongoose-factory';
+import MongooseAddressFactory from 'src/infra/factory/mongoose-address-factory';
 
+const FEATURES = [MongooseAddressFactory.make()];
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Address.name, schema: AddressSchema }])],
+  imports: [MongooseFactory.forFeature(...FEATURES)],
   controllers: [AddressesController],
-  providers: [AddressesService]
+  providers: [AddressesService],
+  exports: [AddressesService]
 })
 export class AddressesModule {}

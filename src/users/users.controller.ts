@@ -3,9 +3,11 @@ import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Utils } from 'src/utils/Utils';
+import { AddressesService } from 'src/addresses/addresses.service';
+
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {};
+  constructor(private readonly usersService: UsersService, private readonly addressesService: AddressesService) {};
 
   @Get('all')
   async findAll(@Query() queryParams, @Res() res: Response) {
@@ -91,6 +93,9 @@ export class UsersController {
     if(Utils.normalizeOnlyNumbers(payload.cpf).length !== 11) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF precisa ter 11 caracteres.'});
     };
+    console.log(payload);
+    const result = await this.addressesService.findOne(payload.postal_code);
+    console.log(result);
     return res.status(HttpStatus.CREATED).json({ ok: payload });
   };
 };
