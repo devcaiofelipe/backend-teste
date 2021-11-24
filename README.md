@@ -2,7 +2,7 @@
 - Ter docker e docker-compose instalado na sua máquina.
 
 ## Como rodar a aplicação?
-- Use o comando acima na raiz do projeto, isso vai buildar a imagem descrita no Dockerfile.
+- Use o comando abaixo na raiz do projeto, isso vai buildar a imagem descrita no Dockerfile.
 ```bash
 $ docker build -t backend_api .
 ```
