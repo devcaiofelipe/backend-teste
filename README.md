@@ -54,7 +54,7 @@ $ Passar o :id no param e no body os dados que deseja atualizar. Todos os campos
 }
 ```
 
-- Deletar usuário - http://localhost:3000/users/:id/update
+- Deletar usuário - http://localhost:3000/users/:id/delete
 ```bash
 $ Passar o :id que deseja deletar no param.
 ```
