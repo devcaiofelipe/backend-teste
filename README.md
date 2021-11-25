@@ -35,6 +35,8 @@ $ Qualquer um dos três queryParams é opcional.
 page a página que você deseja ver. 
 users a quantidade de usuário por página 
 order a forma de ordenação da lista.
+A ideia desse endpoint é trazer o minimo possivel 
+e buscar os detalhes de usuário somente quando necessário pelo endpoint /find-by-cpf
 ```
 
 - Buscar usuário por CPF - http://localhost:3000/users/:cpf/find-by-cpf
