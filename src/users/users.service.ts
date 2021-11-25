@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -70,7 +71,30 @@ export class UsersService {
     return user ? user : null;
   };
 
-  async update(userId: number, userData: UpdateUserDto) {
-    return;
+  async update(userId: number, userData: UpdateUserDto, addressInfo: CreateAddressDto) {
+    const data: UpdateUserDto = {};
+    if(userData.fullname) {
+      data.fullname = userData.fullname;
+    };
+    if(userData.cpf) {
+      data.cpf = userData.cpf;
+    };
+    if(userData.phone) {
+      data.phone = userData.phone;
+    };
+    if(userData.postal_code) {
+      data.postal_code = userData.postal_code;
+    };
+    data.postal_code = addressInfo.postalCode;
+    data.street = addressInfo.street;
+    data.city = addressInfo.city;
+    data.state = addressInfo.state;
+    const result = await this.usersRepository.update({ id: userId }, data);
+    const hasBeenUpdated = result.affected > 0;
+    if(!hasBeenUpdated) {
+      return null;
+    }
+    const updatedUser = await this.findOne(String(userId));
+    return updatedUser;
   };
 }

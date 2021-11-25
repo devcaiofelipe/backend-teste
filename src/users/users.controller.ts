@@ -3,7 +3,8 @@ import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Utils } from 'src/utils/Utils';
-import { AddressesService } from 'src/addresses/addresses.service';
+import { AddressesService, AddressType } from 'src/addresses/addresses.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -82,20 +83,28 @@ export class UsersController {
   };
 
   @Post(':id/update')
-  async update(@Param() params, @Body() payload, @Res() res: Response) {
+  async update(@Param() params, @Body() payload: UpdateUserDto, @Res() res: Response) {
     const { id } = params;
     if(!Utils.isDigit(id) || parseInt(id) < 1) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Parametro ID precisa ser numérico.' });
     };
-    if(Utils.normalizeOnlyNumbers(payload.phone).length !== 11) {
+    if(payload.phone && Utils.normalizeOnlyNumbers(payload.phone).length !== 11) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Telefone precisa ter 11 caracteres.'});
     };
-    if(Utils.normalizeOnlyNumbers(payload.cpf).length !== 11) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF precisa ter 11 caracteres.'});
+    if(payload.cpf && Utils.normalizeOnlyNumbers(payload.cpf).length !== 11) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF precisa ser válido e ter 11 caracteres.'});
     };
-    console.log(payload);
-    const result = await this.addressesService.findOne(payload.postal_code);
-    console.log(result);
-    return res.status(HttpStatus.CREATED).json({ ok: payload });
+    if(payload.postal_code && Utils.normalizeOnlyNumbers(payload.postal_code).length !== 8) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CEP precisa ter 8 caracteres.'});
+    };
+    let addressInfo: AddressType;
+    if(payload.postal_code) {
+      addressInfo = await this.addressesService.findOne(payload.postal_code);
+    };
+    if(!addressInfo) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Os dados do endereço não foram encontrado.' });
+    };
+    const result = await this.usersService.update(id, payload, addressInfo);
+    return res.status(HttpStatus.CREATED).json(result);
   };
 };

@@ -20,7 +20,7 @@ type AddressBR = {
   ddd?:string | null;
   siafi?:string | null;
 };
-type AddressType = { postalCode: string, street: string | null, city: string | null, state:string | null } | null;
+export type AddressType = { postalCode: string, street: string | null, city: string | null, state:string | null } | null;
 
 @Injectable()
 export class AddressesService {
