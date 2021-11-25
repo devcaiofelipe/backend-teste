@@ -31,7 +31,10 @@ $
 
 - Buscar todos usuários - http://localhost:3000/users/all?page=3&users=5&order=ASC
 ```bash
-$ Qualquer um dos três queryParams é opcional. Sendo page a página que você deseja ver, users a quantidade de usuário por página e order  a forma de ordenação da lista.
+$ Qualquer um dos três queryParams é opcional.
+page a página que você deseja ver. 
+users a quantidade de usuário por página 
+order a forma de ordenação da lista.
 ```
 
 - Buscar usuário por CPF - http://localhost:3000/users/:cpf/find-by-cpf
