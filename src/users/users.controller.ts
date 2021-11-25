@@ -97,6 +97,10 @@ export class UsersController {
     if(payload.postal_code && Utils.normalizeOnlyNumbers(payload.postal_code).length !== 8) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CEP precisa ter 8 caracteres.'});
     };
+    const CPFAlreadyExists = await this.usersService.findByCPF(payload.cpf);
+    if(CPFAlreadyExists) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF ja esta em uso.' });
+    };
     let addressInfo: AddressType;
     if(payload.postal_code) {
       addressInfo = await this.addressesService.findOne(payload.postal_code);
