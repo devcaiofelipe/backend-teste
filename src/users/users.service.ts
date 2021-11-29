@@ -5,7 +5,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-type orderType = 'ASC' | 'DESC';
+type sortType = 'ASC' | 'DESC';
 
 @Injectable()
 export class UsersService {
@@ -14,25 +14,25 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(page: number, number: number, orderType: orderType): Promise<User[]> {
+  findAll(page: number, limit: number, sortType: sortType): Promise<User[]> {
     const MAX_USERS_PER_PAGE = 50;
     const MIN_USERS_PER_PAGE = 1;
     const MIN_NUMBER_PAGE = 1;
     if(page < MIN_NUMBER_PAGE) {
       page = 1;
     };
-    if(number > MAX_USERS_PER_PAGE) {
-      number = 50;
+    if(limit > MAX_USERS_PER_PAGE) {
+        limit = 50;
     };
-    if(number < MIN_USERS_PER_PAGE) {
-      number = 1;
+    if(limit < MIN_USERS_PER_PAGE) {
+        limit = 1;
     };
-    const offset = number * (page - 1);
+    const offset = limit * (page - 1);
     return this.usersRepository.find({
       select: ['id', 'fullname', 'cpf'],
       skip: offset,
-      take: number,
-      order: { id: orderType }
+      take: limit,
+      order: { id: sortType }
     });
   };
 

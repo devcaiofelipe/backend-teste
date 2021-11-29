@@ -7,7 +7,7 @@ import { Utils } from '../utils/Utils';
 export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
 
-  @Get(':postalCode/detail')
+  @Get(':postalCode')
   async findOne(@Param('postalCode') postalCode: string, @Res() res: Response) {
     const normalizedCep = Utils.normalizeOnlyNumbers(postalCode);
     if(normalizedCep.length !== 8) {

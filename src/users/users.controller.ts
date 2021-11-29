@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Res, HttpStatus, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Res, HttpStatus, Body, Param, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,35 +10,35 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService, private readonly addressesService: AddressesService) {};
 
-  @Get('all')
+  @Get('')
   async findAll(@Query() queryParams, @Res() res: Response) {
-    let { page, users, order } = queryParams;
+    let { page, limit, sort } = queryParams;
     const pageWasNotSent = typeof page === 'undefined';
-    const usersWasNotSent = typeof users === 'undefined';
-    const orderWasNotSent = typeof order === 'undefined';
+    const limitWasNotSent = typeof limit === 'undefined';
+    const sortWasNotSent = typeof sort === 'undefined';
     if(pageWasNotSent) {
       page = 1;
     };
-    if(usersWasNotSent) {
-      users = 10;
+    if(limitWasNotSent) {
+        limit = 10;
     };
-    if(orderWasNotSent) {
-      order = 'DESC'
+    if(sortWasNotSent) {
+        sort = 'DESC'
     };
-    const ordersType = ['ASC', 'DESC'];
-    if(!ordersType.includes(order.toUpperCase())) {
+    const sortType = ['ASC', 'DESC'];
+    if(!sortType.includes(sort.toUpperCase())) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Order precisa ser ASC ou DESC' })
     };
-    if(!Utils.isDigit(page) || !Utils.isDigit(users)) {
+    if(!Utils.isDigit(page) || !Utils.isDigit(limit)) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Os parametros de consulta precisam ser numérico' });
     };
     const pageNumber = parseInt(page);
-    const usersNumber = parseInt(users);
-    const result = await this.usersService.findAll(pageNumber, usersNumber, order.toUpperCase());
+    const limitNumber = parseInt(limit);
+    const result = await this.usersService.findAll(pageNumber, limitNumber, sort.toUpperCase());
     return res.status(HttpStatus.ACCEPTED).json(result);
   };
 
-  @Post('create')
+  @Post('')
   async create(@Body() payload: CreateUserDto, @Res() res: Response) {
     const userIsInvalid = Utils.validateUser(payload);
     if(userIsInvalid) {
@@ -56,7 +56,7 @@ export class UsersController {
     return res.status(HttpStatus.CREATED).json(newUser);
   };
 
-  @Get(':cpf/find-by-cpf')
+  @Get(':cpf')
   async findOneByCPF(@Param() params, @Res() res: Response) {
     const { cpf } = params;
     const normalizedCPF = Utils.normalizeOnlyNumbers(cpf);
@@ -70,7 +70,7 @@ export class UsersController {
     return res.status(HttpStatus.ACCEPTED).json(userFound);
   };
 
-  @Delete(':id/delete')
+  @Delete(':id')
   async delete(@Param() params, @Res() res: Response) {
     const { id } = params;
     const integer = parseInt(id);
@@ -82,7 +82,7 @@ export class UsersController {
     return res.status(HttpStatus.ACCEPTED).json({ message: 'Usuário deletado com sucesso.' });
   };
 
-  @Post(':id/update')
+  @Put(':id')
   async update(@Param() params, @Body() payload: UpdateUserDto, @Res() res: Response) {
     const { id } = params;
     if(!Utils.isDigit(id) || parseInt(id) < 1) {
@@ -91,7 +91,7 @@ export class UsersController {
     if(payload.phone && Utils.normalizeOnlyNumbers(payload.phone).length !== 11) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Telefone precisa ter 11 caracteres.'});
     };
-    if(payload.cpf && Utils.normalizeOnlyNumbers(payload.cpf).length !== 11) {
+    if(payload.cpf && Utils.normalizeOnlyNumbers(payload.cpf).length !== 11 || !Utils.isValidCPF(payload.cpf) ) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'CPF precisa ser válido e ter 11 caracteres.'});
     };
     if(payload.postal_code && Utils.normalizeOnlyNumbers(payload.postal_code).length !== 8) {
