@@ -13,7 +13,7 @@ $ docker-compose up
 ```
 
 ## Endpoints da aplicação
-- Criação de usuário - http://localhost:3000/users/create
+- Criação de usuário - http://localhost:3000/users
 ```bash
 $ 
 {
@@ -29,7 +29,7 @@ $
 }
 ```
 
-- Buscar todos usuários - http://localhost:3000/users/all?page=3&users=5&order=ASC
+- Buscar todos usuários - http://localhost:3000/users?page=3&limit=5&sort=ASC
 ```bash
 $ Qualquer um dos três queryParams é opcional.
 page a página que você deseja ver. 
@@ -39,11 +39,11 @@ A ideia desse endpoint é trazer o minimo possivel
 e buscar os detalhes de usuário somente quando necessário pelo endpoint /find-by-cpf
 ```
 
-- Buscar usuário por CPF - http://localhost:3000/users/:cpf/find-by-cpf
+- Buscar usuário por CPF - http://localhost:3000/users/:cpf
 ```bash
 $ Passar um param :cpf com 11 caracteres.
 ```
-- Atualizar usuário - http://localhost:3000/users/:id/update
+- Atualizar usuário - http://localhost:3000/users/:id
 ```bash
 $ Passar o :id no param e no body os dados que deseja atualizar. Todos os campos são opcionais.
 {
@@ -54,12 +54,12 @@ $ Passar o :id no param e no body os dados que deseja atualizar. Todos os campos
 }
 ```
 
-- Deletar usuário - http://localhost:3000/users/:id/delete
+- Deletar usuário - http://localhost:3000/users/:id
 ```bash
 $ Passar o :id que deseja deletar no param.
 ```
 
-- Buscar endereço por CEP - http://localhost:3000/addresses/:cep/detail
+- Buscar endereço por CEP - http://localhost:3000/addresses/:cep
 ```bash
 $ Passar como param o :cep que deseja procurar.
 ```
