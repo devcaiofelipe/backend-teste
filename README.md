@@ -1,6 +1,6 @@
 ## Finalidade deste projeto?
 - Este é um projeto de estudos sobre o framework NestJS, MySQL, TypeORM e MongoDB.
-- 
+
 ## Funcionalidades
 - Você pode cadastrar usuários e ceps.
 - MongoDB foi usado para fazer cache dos dados não relacionais.
