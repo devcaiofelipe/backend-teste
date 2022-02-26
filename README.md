@@ -1,7 +1,7 @@
 ## API Rest com NestJS
 
 ## Finalidade deste projeto?
-- Este é um projeto de estudos sobre o framework NestJS, MySQL, TypeORM e MongoDB.
+- Este é um projeto de estudos sobre o framework NestJS, MySQL, TypeORM, MongoDB, Mongoose, Docker e Docker-Compose.
 
 ## Funcionalidades
 - Você pode cadastrar usuários e ceps.
