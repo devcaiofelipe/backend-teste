@@ -11,6 +11,9 @@ services:
         depends_on:
             - mysql-development
             - mongodb
+        links:
+            - mongodb
+            - mysql-development
 
     mongodb:
         image : mongo:latest
