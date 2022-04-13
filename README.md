@@ -1,3 +1,13 @@
+## API Rest com NestJS
+
+## Finalidade deste projeto?
+- Este é um projeto de estudos sobre o framework NestJS, MySQL, TypeORM, MongoDB, Mongoose, Docker e Docker-Compose.
+
+## Funcionalidades
+- Você pode cadastrar usuários e ceps.
+- MongoDB foi usado para fazer cache dos dados não relacionais.
+- Api viacep foi usada para consulta dos ceps.
+
 ## O que você precisa?
 - Ter docker e docker-compose instalado na sua máquina.
 
